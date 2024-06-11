@@ -50,3 +50,37 @@ def update_store_query():
 
 def delete_store_query():
     return "DELETE FROM stores WHERE id = %s;"
+
+### User Queries
+
+def get_user_by_login():
+    return """
+    SELECT user_id, username, email, password_hash, role
+    FROM Users
+    WHERE email = %s OR username = %s;
+    """
+def get_user_by_id():
+    return """
+    SELECT user_id, username, email, role
+    FROM Users
+    WHERE user_id = %s;
+    """    
+def create_user():
+    return """
+    INSERT INTO Users (email, password_hash, name, role)
+    VALUES (%s, %s, %s, %s)
+    RETURNING user_id;
+    """
+def update_user_password():
+    return """
+    UPDATE Users
+    SET password_hash = %s
+    WHERE user_id = %s;
+    """
+def update_user_role():
+    return """
+    UPDATE Users
+    SET role = %s
+    WHERE user_id = %s
+    RETURNING user_id;
+    """
